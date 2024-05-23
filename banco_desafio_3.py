@@ -66,17 +66,19 @@ class Conta:
             
         else:
             print("Operação falhou! Valor informado inválido")
+        
         return False
             
     def depositar(self, valor):
         if valor > 0:
             self._saldo += valor
             print("\n Depósito realizado com sucesso!")
+            return True
         else:
             print ("Operação falhou! Valor informado inválido")
             return False
             
-        return True
+
     
 class ContaCorrente(Conta):
     def __init__(self, numero, cliente, limite=500, limite_saques=3):
@@ -85,7 +87,9 @@ class ContaCorrente(Conta):
         self.limite_saques = limite_saques
         
     def sacar(self, valor):
-        numero_saques = len([transacao for transacao in self.historico.transacoes if transacao["tipo"] == Saque.__name__])
+        numero_saques = len(
+            [transacao for transacao in self.historico.transacoes if transacao["tipo"] == Saque.__name__]
+            )
         
         excedeu_limite = valor > self.limite
         excedeu_saques = numero_saques >= self.limite_saques
@@ -114,7 +118,7 @@ class Historico:
         
     @property
     def transacoes(self):
-        return self.transacoes
+        return self._transacoes
     
     def adicionar_transacao(self, transacao):
         self._transacoes.append(
@@ -130,6 +134,7 @@ class Transacao(ABC):
     @abstractproperty
     def valor(self):
         pass
+    
     @abstractclassmethod
     def registrar(self, conta):
         pass
@@ -144,9 +149,9 @@ class Saque(Transacao):
     
     def registrar(self, conta):
         sucesso_transacao = conta.sacar(self.valor)
-
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
+            
                 
 class Deposito(Transacao):
     def __init__(self, valor):
@@ -158,7 +163,6 @@ class Deposito(Transacao):
     
     def registrar(self, conta):
         sucesso_transacao = conta.depositar(self.valor)
-
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
             
@@ -208,6 +212,7 @@ def depositar_ou_sacar(clientes, opcao):
         return
     
     cliente.realizar_transacao(conta, transacao)
+    return
     
 def exibir_extrato(clientes):
     cpf = input("Informe o CPF do cliente:")
@@ -224,12 +229,13 @@ def exibir_extrato(clientes):
     print("++++++++++ Extrato +++++++++++")
     transacoes = conta.historico.transacoes
     
-    extratp = ""
+    extrato = ""
+    
     if not transacoes:
         extrato = "Não foram realizadas movimentações"
     else:
         for transacao in transacoes:
-            extrato += f"\n{transacao["tipo"]}:\n\tR${transacao["valor"]:.2f}"
+            extrato += f"\n{transacao['tipo']}:\n\tR$ {transacao['valor']:.2f}"
     print(extrato)
     print(f'\nSaldo:\n\tR$ {conta.saldo:.2f}')
     print("     ***********      ")
