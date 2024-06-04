@@ -1,6 +1,8 @@
 import sys
 import os
 
+
+
 lista = ['banana', 'maçã']
 
 b = "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"

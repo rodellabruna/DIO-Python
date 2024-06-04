@@ -3,7 +3,7 @@ from abc import ABC, abstractclassmethod, abstractproperty
 from datetime import datetime
 
 
-class contasIterador:
+class ContasIterador:
     def __init__(self, contas):
         self.contas = contas
         self._index = 0
@@ -307,7 +307,7 @@ def sacar(clientes):
 
 
 @log_transacao
-def exibirExtrato(clientes):
+def exibir_extrato(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
 
@@ -335,7 +335,7 @@ def exibirExtrato(clientes):
 
 
 @log_transacao
-def criarCliente(clientes):
+def criar_cliente(clientes):
     cpf = input("Informe o CPF (somente número): ")
     cliente = filtrar_cliente(cpf, clientes)
 
@@ -359,7 +359,7 @@ def criarCliente(clientes):
 
 
 @log_transacao
-def criarConta(numero_conta, clientes, contas):
+def criar_conta(numero_conta, clientes, contas):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
 
@@ -377,8 +377,8 @@ def criarConta(numero_conta, clientes, contas):
     print("\n=== Conta criada com sucesso! ===")
 
 
-def listarContas(contas):
-    for conta in contasIterador(contas):
+def listar_contas(contas):
+    for conta in ContasIterador(contas):
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
 
@@ -397,17 +397,17 @@ def main():
             sacar(clientes)
 
         elif opcao == "e":
-            exibirExtrato(clientes)
+            exibir_extrato(clientes)
 
         elif opcao == "nu":
-            criarCliente(clientes)
+            criar_cliente(clientes)
 
         elif opcao == "nc":
             numero_conta = len(contas) + 1
-            criarConta(numero_conta, clientes, contas)
+            criar_conta(numero_conta, clientes, contas)
 
         elif opcao == "lc":
-            listarContas(contas)
+            listar_contas(contas)
 
         elif opcao == "q":
             break
